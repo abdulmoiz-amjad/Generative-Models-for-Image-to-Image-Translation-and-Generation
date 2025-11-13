@@ -17,27 +17,38 @@ Augmentation: Scaling, rotation, and noise addition to handle the small dataset 
 
 ### 2. Custom GAN on CIFAR-10 (Cats & Dogs Only)
 Generator: DCGAN-style network producing 32×32 RGB images.
+
 Discriminator: Siamese-style, comparing real vs. generated images and returning a similarity score.
+
 Dataset: CIFAR-10, filtered for cats and dogs, normalized to [-1, 1].
 
 ### 3. Conditional GAN (cGAN) – Sketch to Face
 Generator takes a sketch + noise and outputs a realistic face.
+
 Discriminator evaluates (sketch, face) pairs.
+
 Dataset: Person Face Sketches dataset with paired sketch-photo images (64×64).
 
 ### 4. CycleGAN – Face ↔ Sketch Translation
 
 Two Generators: Face → Sketch and Sketch → Face.
+
 Two PatchGAN Discriminators for patch realism.
+
 Uses adversarial + cycle consistency + identity losses.
+
 Bidirectional translation achieved reliably with longer training.
+
 Models are checkpointed after every epoch.
 
 ⚙️ Training Setup
 
 Optimizer: Adam (lr = 0.0002, betas = (0.5, 0.999))
+
 Augmentation: Scaling, rotation, noise injection (signatures).
+
 Checkpoints: Saved every epoch.
+
 Environment: Notebook tested on Kaggle T4 GPU.
 
 📊 Results Summary
@@ -45,11 +56,13 @@ Environment: Notebook tested on Kaggle T4 GPU.
 VAE & GAN:
 
 VAE reconstructs signatures well.
+
 GAN signatures improve visually with training.
 
 Custom GAN (Cats & Dogs):
 
 Siamese discriminator improves realism.
+
 Cat/dog features emerge clearly after training.
 
 cGAN:
@@ -59,6 +72,7 @@ Blurry faces at first, clearer with more epochs.
 CycleGAN:
 
 Reliable face ↔ sketch translation.
+
 Better detail with longer training.
 
 📂 Datasets Used
