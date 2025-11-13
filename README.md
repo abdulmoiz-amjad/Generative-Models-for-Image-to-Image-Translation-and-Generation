@@ -51,7 +51,7 @@ Checkpoints: Saved every epoch.
 
 Environment: Notebook tested on Kaggle T4 GPU.
 
-📊 Results Summary
+### 📊 Results Summary
 
 VAE & GAN:
 
