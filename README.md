@@ -8,11 +8,8 @@ All code is written inside a single Jupyter Notebook: main.ipynb, including prep
 
 ### 1. Signature Image Generation (VAE + Simple GAN)
 VAE: Learns latent representations of signature images using convolutional encoders/decoders.
-
 Simple GAN: Generates fake signatures from random noise.
-
 Dataset: Grayscale signature images resized to 64×64.
-
 Augmentation: Scaling, rotation, and noise addition to handle the small dataset size.
 
 ### 2. Custom GAN on CIFAR-10 (Cats & Dogs Only)
@@ -41,7 +38,7 @@ Bidirectional translation achieved reliably with longer training.
 
 Models are checkpointed after every epoch.
 
-⚙️ Training Setup
+### ⚙️ Training Setup
 
 Optimizer: Adam (lr = 0.0002, betas = (0.5, 0.999))
 
