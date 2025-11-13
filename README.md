@@ -1,91 +1,162 @@
-# Generative-Models-for-Image-to-Image-Translation-and-Generation
+# Generative Models for Image-to-Image Translation and Generation
 
-This repository contains implementations of different deep generative models for both image generation and image-to-image translation tasks. The work explores Variational Autoencoders (VAE), multiple types of GANs, and translation frameworks such as Conditional GANs (cGAN) and CycleGAN.
+This repository contains implementations of different **deep generative models** for both image generation and image-to-image translation tasks. The work explores Variational Autoencoders (VAE), multiple types of GANs, and translation frameworks such as Conditional GANs (cGAN) and CycleGAN.
 
-All code is written inside a single Jupyter Notebook: main.ipynb, including preprocessing, model architectures, training, evaluation, visualizations, a Streamlit interface, and an ngrok cell for generating a public demo link.
+All code is written inside a single **Jupyter Notebook**: **`main.ipynb`**, including preprocessing, model architectures, training, evaluation, visualizations, a **Streamlit interface**, and an **ngrok cell** for generating a public demo link.
 
-## 📌Implemented Tasks
+---
+
+## 📌 Implemented Tasks
 
 ### 1. Signature Image Generation (VAE + Simple GAN)
-VAE: Learns latent representations of signature images using convolutional encoders/decoders.
 
-Simple GAN: Generates fake signatures from random noise.
+* **VAE**: Learns latent representations of signature images using convolutional encoders/decoders.
+* **Simple GAN**: Generates fake signatures from random noise.
+* **Dataset**: Grayscale signature images resized to **64×64**.
+* **Augmentation**: Scaling, rotation, and noise addition to handle the small dataset size.
 
-Dataset: Grayscale signature images resized to 64×64.
-
-Augmentation: Scaling, rotation, and noise addition to handle the small dataset size.
+---
 
 ### 2. Custom GAN on CIFAR-10 (Cats & Dogs Only)
-Generator: DCGAN-style network producing 32×32 RGB images.
 
-Discriminator: Siamese-style, comparing real vs. generated images and returning a similarity score.
+* **Generator**: DCGAN-style network producing **32×32 RGB images**.
+* **Discriminator**: **Siamese-style**, comparing real vs. generated images and returning a similarity score.
+* **Dataset**: CIFAR-10, filtered for cats and dogs, normalized to `[-1, 1]`.
 
-Dataset: CIFAR-10, filtered for cats and dogs, normalized to [-1, 1].
+---
 
 ### 3. Conditional GAN (cGAN) – Sketch to Face
-Generator takes a sketch + noise and outputs a realistic face.
 
-Discriminator evaluates (sketch, face) pairs.
+* Generator takes a **sketch + noise** and outputs a realistic face.
+* Discriminator evaluates **(sketch, face)** pairs.
+* **Dataset**: Person Face Sketches dataset with paired **sketch-photo** images (64×64).
 
-Dataset: Person Face Sketches dataset with paired sketch-photo images (64×64).
+---
 
 ### 4. CycleGAN – Face ↔ Sketch Translation
 
-Two Generators: Face → Sketch and Sketch → Face.
+* **Two Generators**: Face → Sketch and Sketch → Face.
+* **Two PatchGAN Discriminators** for patch realism.
+* Uses **adversarial + cycle consistency + identity losses**.
+* Bidirectional translation achieved reliably with longer training.
+* Models are checkpointed after every epoch.
 
-Two PatchGAN Discriminators for patch realism.
+---
 
-Uses adversarial + cycle consistency + identity losses.
+## ⚙️ Training Setup
 
-Bidirectional translation achieved reliably with longer training.
+* **Optimizer**: Adam (lr = 0.0002, betas = (0.5, 0.999))
+* **Augmentation**: Scaling, rotation, noise injection (signatures).
+* **Checkpoints**: Saved every epoch.
+* **Environment**: Notebook tested on Kaggle T4 GPU.
 
-Models are checkpointed after every epoch.
+---
 
-### ⚙️ Training Setup
+## 📊 Results Summary
 
-Optimizer: Adam (lr = 0.0002, betas = (0.5, 0.999))
+* **VAE & GAN**:
 
-Augmentation: Scaling, rotation, noise injection (signatures).
+  * VAE reconstructs signatures well.
+  * GAN signatures improve visually with training.
 
-Checkpoints: Saved every epoch.
+* **Custom GAN (Cats & Dogs)**:
 
-Environment: Notebook tested on Kaggle T4 GPU.
+  * Siamese discriminator improves realism.
+  * Cat/dog features emerge clearly after training.
 
-### 📊 Results Summary
+* **cGAN**:
 
-VAE & GAN:
+  * Blurry faces at first, clearer with more epochs.
 
-VAE reconstructs signatures well.
+* **CycleGAN**:
 
-GAN signatures improve visually with training.
+  * Reliable face ↔ sketch translation.
+  * Better detail with longer training.
 
-Custom GAN (Cats & Dogs):
+---
 
-Siamese discriminator improves realism.
+## ▶️ Running the Project
 
-Cat/dog features emerge clearly after training.
+Clone and install requirements:
 
-cGAN:
+```bash
+git clone <repo-link>
+cd <repo-name>
+```
 
-Blurry faces at first, clearer with more epochs.
+Open the notebook in Jupyter, Colab, or Kaggle (with T4 GPU enabled):
 
-CycleGAN:
+```bash
+jupyter notebook main.ipynb
+```
 
-Reliable face ↔ sketch translation.
+Run the cells sequentially to preprocess data, train and test the models, and view the evaluations.
 
-Better detail with longer training.
+### Streamlit + ngrok Demo
 
-📂 Datasets Used
-[Signature Verification Dataset]
+A **Streamlit app** is included at the end for the fourth task. Running only that cell will launch the demo:
 
-ℹ️ Kaggle link: (https://www.kaggle.com/datasets/robinreni/signature-verification-dataset)
+with **ngrok**:
 
-[CIFAR-10 — A classic dataset consisting of 60,000 32×32 color images in 10 classes (50,000 train + 10,000 test)]
+```bash
+!ngrok authtoken <your_token>
+!streamlit run streamlit_app.py --server.port 8000
+```
 
-ℹ️ Download & info: (https://www.cs.toronto.edu/~kriz/cifar.html)
+A public link will be generated automatically.
 
-[Person Face Sketches — Dataset of paired face photos and sketches (21,000+ images)]
+---
 
-ℹ️ Kaggle link: (https://www.kaggle.com/datasets/almightyj/person-face-sketches)
+## 📂 File Structure
 
+```
+main.ipynb
+ ├── Data preprocessing & augmentation
+ ├── VAE & Simple GAN (signatures)
+ ├── Custom GAN (CIFAR-10 cats/dogs)
+ ├── cGAN (sketch → face)
+ ├── CycleGAN (face ↔ sketch)
+ ├── Training, evaluation, plots
+ └── Streamlit interface + ngrok cell
+```
 
+---
+
+## 🔑 Insights
+
+* Data augmentation is critical for limited datasets.
+* Siamese discriminators give more structured feedback than plain real/fake.
+* Stable cGAN/CycleGAN training requires balancing adversarial, cycle, and identity losses.
+* CycleGAN enables **unpaired** translation but is resource heavy.
+
+---
+
+## 📂 Datasets Used
+
+* [Signature Verification Dataset]
+
+   ℹ️ Kaggle link: (https://www.kaggle.com/datasets/robinreni/signature-verification-dataset)
+
+* [CIFAR-10 — A classic dataset consisting of 60,000 32×32 color images in 10 classes (50,000 train + 10,000 test)]
+
+   ℹ️ Download & info: (https://www.cs.toronto.edu/~kriz/cifar.html)
+
+* [Person Face Sketches — Dataset of paired face photos and sketches (21,000+ images)]
+
+   ℹ️ Kaggle link: (https://www.kaggle.com/datasets/almightyj/person-face-sketches)
+
+---
+
+## 📖 References
+
+* Kingma & Welling, *Auto-Encoding Variational Bayes* (2013)
+* Goodfellow et al., *Generative Adversarial Nets* (2014)
+* Mirza & Osindero, *Conditional GANs* (2014)
+* Zhu et al., *CycleGAN* (2017)
+* Radford et al., *DCGAN* (2015)
+
+---
+
+✍️ **Author**: Abdulmoiz
+
+---
